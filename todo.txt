@@ -1,0 +1,8 @@
+config for colour checks - DONE
+  - replace with same colour exhibit
+  - check there are no duplicate colours? might be tough - didnt do
+config for allowing other than act1 - DONE
+config for same character checks - DONE
+fix potential boss exhibit duplicate when fighting modded boss - DOESNT OCCUR
+  - if boss exhibit config is set to not replace
+maybe add random for each exhibit instead of true/false?
