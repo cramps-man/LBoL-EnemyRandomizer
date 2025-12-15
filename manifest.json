@@ -2,6 +2,6 @@
   "name": "EnemyRandomizer",
   "version_number": "1.0.0",
   "website_url": "",
-  "description": "Replaces normal and elite enemies",
+  "description": "Replaces normal and elite battle enemies with random enemies, based on act and weight value",
   "dependencies": [ "BepInEx-BepInExPack-5.4.2100", "TeamNeo-Sideloader-0.9.7850"]
 }
