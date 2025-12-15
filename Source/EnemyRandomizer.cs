@@ -27,7 +27,15 @@ namespace EnemyRandomizer
         private static void Postfix(BattleStation __instance)
         {
             if (!(__instance is EnemyStation) && !(__instance is EliteEnemyStation))
+            {
+                BepinexPlugin.log.LogInfo("Not enemy or elite station");
                 return;
+            }
+            if (!__instance.GameRun.HasJadeBox<EnemyRandomizerJadebox>())
+            {
+                BepinexPlugin.log.LogInfo("Jadebox not enabled");
+                return;
+            }
 
             BepinexPlugin.log.LogInfo("Act: " + __instance.Stage.Level + " - Act section: " + __instance.Act);
             int maxActWeight = GetActWeight(__instance.Stage.Level, __instance.Act, __instance is EliteEnemyStation);

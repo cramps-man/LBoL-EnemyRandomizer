@@ -1,0 +1,4 @@
+EnemyRandomizerJadebox:
+  Name: Enemy Randomizer
+  Description: |-
+    Replaces normal and elite battle enemies with random enemies, based on act and weight value

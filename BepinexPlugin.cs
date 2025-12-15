@@ -2,6 +2,7 @@
 using BepInEx.Configuration;
 using HarmonyLib;
 using LBoLEntitySideloader;
+using LBoLEntitySideloader.Entities;
 using LBoLEntitySideloader.Resource;
 using System.Reflection;
 using UnityEngine;
@@ -23,6 +24,8 @@ namespace EnemyRandomizer
 
         internal static IResourceSource embeddedSource = new EmbeddedSource(Assembly.GetExecutingAssembly());
         internal static DirectorySource directorySource = new DirectorySource(global::EnemyRandomizer.PInfo.GUID, "");
+
+        internal static BatchLocalization jadeboxLoc = new BatchLocalization(directorySource, typeof(JadeBoxTemplate), "jadebox");
 
         private void Awake()
         {
