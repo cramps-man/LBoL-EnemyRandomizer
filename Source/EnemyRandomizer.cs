@@ -21,7 +21,7 @@ namespace EnemyRandomizer
     internal class EnemyRandomizer
     {
         private const int MAX_ENEMIES = 5;
-        private const int MAX_ROLLS = 10;
+        private const int MAX_ROLLS = 20;
 
         [HarmonyPatch(typeof(BattleStation), nameof(BattleStation.OnEnter))]
         private static void Postfix(BattleStation __instance)
@@ -64,7 +64,7 @@ namespace EnemyRandomizer
 
             var chosenEnemies = new List<EnemyGroupEntry.EntrySource>();
             int index = 4;
-            foreach (var (enemyType, value) in potentialEnemies.OrderByDescending(e => e.Sum(e2 => e2.Item2)).First())
+            foreach (var (enemyType, value) in potentialEnemies.OrderByDescending(e => e.Sum(e2 => e2.Item2)).Take(5).Sample(__instance.GameRun.StationRng))
             {
                 chosenEnemies.Add(new EnemyGroupEntry.EntrySource(enemyType, index));
                 index--;
@@ -90,13 +90,13 @@ namespace EnemyRandomizer
             { "1-2", 50 },
             { "1-3", 60 },
             { "1-e", 80 },
-            { "2-1", 80 },
-            { "2-2", 95 },
-            { "2-3", 110 },
-            { "2-e", 150 },
-            { "3-1", 150 },
-            { "3-2", 175 },
-            { "3-3", 200 },
+            { "2-1", 90 },
+            { "2-2", 105 },
+            { "2-3", 120 },
+            { "2-e", 160 },
+            { "3-1", 175 },
+            { "3-2", 200 },
+            { "3-3", 225 },
             { "3-e", 300 },
         };
 
@@ -105,50 +105,50 @@ namespace EnemyRandomizer
             { typeof(WhiteFairy), 30 },
             { typeof(RavenWen), 15 },
             { typeof(RavenGuo), 15 },
-            { typeof(GuihuoBlue), 10 },
+            { typeof(GuihuoBlue), 10 }, //spirit
             { typeof(GuihuoGreen), 10 },
             { typeof(GuihuoRed), 10 },
             { typeof(SickGirl), 20 },
-            { typeof(YinyangyuRed), 20 },
+            { typeof(YinyangyuRed), 20 }, //yingyang orb
             { typeof(YinyangyuBlue), 20 },
             { typeof(DollBlue), 40 },
             { typeof(DollPurple), 40 },
-            { typeof(FraudRabbit), 20 },
+            { typeof(FraudRabbit), 25 },
             { typeof(BlackFairy), 50 },
             { typeof(Bat), 15 },
-            { typeof(MaoyuBlue), 10 },
+            { typeof(MaoyuBlue), 10 }, //kedama
             { typeof(Maoyu), 10 },
             { typeof(MaoyuRed), 15 },
             { typeof(MaoyuBlack), 25 },
             //{ typeof(Sunny), 30 },
             { typeof(Luna), 30 },
             { typeof(Star), 30 },
-            { typeof(Aya), 80 },
-            { typeof(Rin), 80 },
-            { typeof(Purifier), 40 },
-            { typeof(Scout), 40 },
+            { typeof(Aya), 60 },
+            { typeof(Rin), 60 },
+            { typeof(Purifier), 45 },
+            { typeof(Scout), 45 },
             { typeof(WaterGirl), 70 },
-            { typeof(Yaoshi), 30 },
+            { typeof(Yaoshi), 45 }, //floating rock
             { typeof(Fox), 120 },
-            { typeof(BatLord), 40 },
-            { typeof(HetongKailang), 30 },
-            { typeof(HetongYinchen), 30 },
-            { typeof(ShenlingPurple), 30 },
+            { typeof(BatLord), 45 },
+            { typeof(HetongKailang), 30 }, //joy kappa
+            { typeof(HetongYinchen), 20 }, //gloomy kappa
+            { typeof(ShenlingPurple), 30 }, //gold spirit
             { typeof(ShenlingWhite), 30 },
-            { typeof(Nitori), 130 },
-            { typeof(Youmu), 130 },
-            { typeof(Kokoro), 130 },
-            { typeof(YaTiangou), 120 },
-            { typeof(LangTiangou), 130 },
+            { typeof(Nitori), 120 },
+            { typeof(Youmu), 120 },
+            { typeof(Kokoro), 110 },
+            { typeof(YaTiangou), 120 }, //crow tengu
+            { typeof(LangTiangou), 130 }, //wolf tengu
             { typeof(LoveGirl), 150 },
-            { typeof(Terminator), 80 },
+            { typeof(Terminator), 100 },
             { typeof(HardworkRabbit), 150 },
             { typeof(LazyRabbit), 150 },
-            { typeof(KanakoLimao), 100 },
-            { typeof(SuwakoLimao), 120 },
-            { typeof(Clownpiece), 250 },
-            { typeof(Siji), 250 },
-            { typeof(Doremy), 250 },
+            { typeof(KanakoLimao), 120 },
+            { typeof(SuwakoLimao), 100 },
+            { typeof(Clownpiece), 225 },
+            { typeof(Siji), 225 },
+            { typeof(Doremy), 225 },
         };
     }
 }

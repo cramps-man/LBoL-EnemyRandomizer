@@ -1,8 +1,14 @@
-config for colour checks - DONE
-  - replace with same colour exhibit
-  - check there are no duplicate colours? might be tough - didnt do
-config for allowing other than act1 - DONE
-config for same character checks - DONE
-fix potential boss exhibit duplicate when fighting modded boss - DOESNT OCCUR
-  - if boss exhibit config is set to not replace
-maybe add random for each exhibit instead of true/false?
+fix sunny softlocking if luna/star dont exist
+  - adjust them to use their ults at battle start?
+  - probs increase their weight if so
+adjust weights for terminator to be higher 90-100? - DONE
+adjust act 3 weights to be 25 higher - DONE
+add custom formation that has 8-10 possible slots
+  - still have max enemies at 5? or make it a config
+fix gloomy kappa just spamming defend with no drones?
+
+add config for each act
+add config to toggle elite nodes randomizing
+add config to toggle elite enemies included in randomizing
+add config to not allow repeat elites
+  - need to save in custom save data which elites have shown
