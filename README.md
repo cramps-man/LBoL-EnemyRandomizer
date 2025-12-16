@@ -8,4 +8,6 @@ Balance is still ongoing, and there may be behavioural issues with some enemies 
 
 Add config to allow the act section maximum weights to be adjusted.  
 Add configs regarding allowing elites.  
+Fix Sunny from softlocking, and make the 3 fairies use their spellcard on lunatic 1st turn.  
+Update gloomy kappa to not just defend if there are no drones?  
 Other various misc things.  
