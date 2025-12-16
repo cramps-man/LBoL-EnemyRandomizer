@@ -1,8 +1,11 @@
+adjust weights for terminator to be higher 90-100? - DONE
+adjust act 3 weights to be 25 higher - DONE
+add chance for higher weight enemies to occasionally show up - DONE
+  - well maybe the increased rolls + roll top 5 will be enough to give a chance of tougher singles to show
+  - added a first enemy min weight
 fix sunny softlocking if luna/star dont exist
   - adjust them to use their ults at battle start?
   - probs increase their weight if so
-adjust weights for terminator to be higher 90-100? - DONE
-adjust act 3 weights to be 25 higher - DONE
 add custom formation that has 8-10 possible slots
   - still have max enemies at 5? or make it a config
 fix gloomy kappa just spamming defend with no drones?

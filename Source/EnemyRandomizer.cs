@@ -20,8 +20,7 @@ namespace EnemyRandomizer
     [HarmonyPatch]
     internal class EnemyRandomizer
     {
-        private const int MAX_ENEMIES = 5;
-        private const int MAX_ROLLS = 20;
+        private const int MAX_ROLLS = 25;
 
         [HarmonyPatch(typeof(BattleStation), nameof(BattleStation.OnEnter))]
         private static void Postfix(BattleStation __instance)
@@ -44,13 +43,18 @@ namespace EnemyRandomizer
             do
             {
                 var candidates = new List<ValueTuple<Type, int>>();
+                int firstEnemyMinWeight = __instance.GameRun.StationRng.NextInt(0, maxActWeight);
+                int maxEnemies = __instance.GameRun.StationRng.NextInt(3, 5);
+                BepinexPlugin.log.LogInfo("First enemy min weight: " + firstEnemyMinWeight + " - max enemies: " + maxEnemies);
                 do
                 {
-                    var cand = enemyWeights.Where(w => w.Value <= maxActWeight).Sample(__instance.GameRun.StationRng);
+                    var cand = enemyWeights.Where(w => w.Value >= firstEnemyMinWeight && w.Value <= maxActWeight).SampleOrDefault(__instance.GameRun.StationRng);
+                    firstEnemyMinWeight = 0;
+                    if (cand.Key == null)
+                        continue;
                     candidates.Add((cand.Key, cand.Value));
-                    BepinexPlugin.log.LogInfo("chosen cand: " + cand.Key + " - " + cand.Value);
-                    BepinexPlugin.log.LogInfo("sum: " + candidates.Sum(c => c.Item2) + " - count: " + candidates.Count);
-                } while (candidates.Sum(c => c.Item2) < maxActWeight && candidates.Count < MAX_ENEMIES);
+                    BepinexPlugin.log.LogInfo("chosen cand: " + cand.Key + " - " + cand.Value + " - sum: " + candidates.Sum(c => c.Item2));
+                } while (candidates.Sum(c => c.Item2) < maxActWeight && candidates.Count < maxEnemies);
                 if (candidates.Sum(c => c.Item2) > maxActWeight)
                 {
                     var toRemove = candidates.Last();
@@ -105,17 +109,17 @@ namespace EnemyRandomizer
             { typeof(WhiteFairy), 30 },
             { typeof(RavenWen), 15 },
             { typeof(RavenGuo), 15 },
-            { typeof(GuihuoBlue), 10 }, //spirit
-            { typeof(GuihuoGreen), 10 },
-            { typeof(GuihuoRed), 10 },
+            { typeof(GuihuoBlue), 15 }, //spirit
+            { typeof(GuihuoGreen), 15 },
+            { typeof(GuihuoRed), 25 },
             { typeof(SickGirl), 20 },
-            { typeof(YinyangyuRed), 20 }, //yingyang orb
-            { typeof(YinyangyuBlue), 20 },
-            { typeof(DollBlue), 40 },
-            { typeof(DollPurple), 40 },
+            { typeof(YinyangyuRed), 25 }, //yingyang orb
+            { typeof(YinyangyuBlue), 25 },
+            { typeof(DollBlue), 50 },
+            { typeof(DollPurple), 50 },
             { typeof(FraudRabbit), 25 },
             { typeof(BlackFairy), 50 },
-            { typeof(Bat), 15 },
+            { typeof(Bat), 20 },
             { typeof(MaoyuBlue), 10 }, //kedama
             { typeof(Maoyu), 10 },
             { typeof(MaoyuRed), 15 },
@@ -127,17 +131,17 @@ namespace EnemyRandomizer
             { typeof(Rin), 60 },
             { typeof(Purifier), 45 },
             { typeof(Scout), 45 },
-            { typeof(WaterGirl), 70 },
+            { typeof(WaterGirl), 90 },
             { typeof(Yaoshi), 45 }, //floating rock
-            { typeof(Fox), 120 },
-            { typeof(BatLord), 45 },
+            { typeof(Fox), 150 },
+            { typeof(BatLord), 50 },
             { typeof(HetongKailang), 30 }, //joy kappa
             { typeof(HetongYinchen), 20 }, //gloomy kappa
             { typeof(ShenlingPurple), 30 }, //gold spirit
             { typeof(ShenlingWhite), 30 },
             { typeof(Nitori), 120 },
             { typeof(Youmu), 120 },
-            { typeof(Kokoro), 110 },
+            { typeof(Kokoro), 120 },
             { typeof(YaTiangou), 120 }, //crow tengu
             { typeof(LangTiangou), 130 }, //wolf tengu
             { typeof(LoveGirl), 150 },
