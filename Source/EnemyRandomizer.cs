@@ -39,6 +39,8 @@ namespace EnemyRandomizer
             BepinexPlugin.log.LogInfo("Act: " + __instance.Stage.Level + " - Act section: " + __instance.Act);
             int maxActWeight = GetActWeight(__instance.Stage.Level, __instance.Act, __instance is EliteEnemyStation);
             BepinexPlugin.log.LogInfo("Max Act weight: " + maxActWeight);
+            int weightLeeway = maxActWeight - 10 - maxActWeight / 8;
+            BepinexPlugin.log.LogInfo("Min weight leeway: " + weightLeeway);
             var potentialEnemies = new List<List<ValueTuple<Type, int>>>();
             do
             {
@@ -62,13 +64,18 @@ namespace EnemyRandomizer
                     candidates.Remove(toRemove);
                 }
                 BepinexPlugin.log.LogInfo("Total weight: " + candidates.Sum(c => c.Item2));
+                if (candidates.Sum(c => c.Item2) < weightLeeway)
+                {
+                    BepinexPlugin.log.LogInfo("===Below min weight===");
+                    continue;
+                }
                 BepinexPlugin.log.LogInfo("===Added enemy group===");
                 potentialEnemies.Add(candidates);
             } while (potentialEnemies.Count < MAX_ROLLS);
 
             var chosenEnemies = new List<EnemyGroupEntry.EntrySource>();
             int index = 4;
-            foreach (var (enemyType, value) in potentialEnemies.OrderByDescending(e => e.Sum(e2 => e2.Item2)).Take(5).Sample(__instance.GameRun.StationRng))
+            foreach (var (enemyType, value) in potentialEnemies.Sample(__instance.GameRun.StationRng))
             {
                 chosenEnemies.Add(new EnemyGroupEntry.EntrySource(enemyType, index));
                 index--;
