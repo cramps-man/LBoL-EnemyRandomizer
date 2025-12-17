@@ -45,8 +45,6 @@ namespace EnemyRandomizer
 
             harmony.PatchAll();
 
-            EnemyHiddenDamageHandler.RegisterHandlers();
-
             EnemyGroupTemplate.AddFormation(CUSTOM_EIGHT_FORMATION, new Dictionary<int, Vector2>()
             {
                 {0, new Vector2(-1,2) },
