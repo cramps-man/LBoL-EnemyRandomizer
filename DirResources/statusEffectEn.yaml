@@ -1,0 +1,4 @@
+EndOfTurnFpSe:
+  Name: Delayed Firepower
+  Description: |-
+    After all enemies take their turn, {OwnerName} gains {Level} |Firepower|.

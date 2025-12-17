@@ -36,6 +36,7 @@ namespace EnemyRandomizer
                 return;
             }
 
+            BepinexPlugin.log.LogInfo("===NEW COMBAT===");
             BepinexPlugin.log.LogInfo("Act: " + __instance.Stage.Level + " - Act section: " + __instance.Act);
             int maxActWeight = GetActWeight(__instance.Stage.Level, __instance.Act, __instance is EliteEnemyStation);
             BepinexPlugin.log.LogInfo("Max Act weight: " + maxActWeight);
@@ -76,6 +77,15 @@ namespace EnemyRandomizer
                 potentialEnemies.Add(candidates);
             } while (potentialEnemies.Count < MAX_ROLLS);
 
+            /*var chosenEnemies = new List<EnemyGroupEntry.EntrySource>()
+            {
+                new EnemyGroupEntry.EntrySource(typeof(HetongKailang), 2),
+                new EnemyGroupEntry.EntrySource(typeof(HetongKailang), 3),
+                new EnemyGroupEntry.EntrySource(typeof(Nitori), 4),
+                new EnemyGroupEntry.EntrySource(typeof(HetongKailang), 5),
+                new EnemyGroupEntry.EntrySource(typeof(HetongKailang), 6),
+                new EnemyGroupEntry.EntrySource(typeof(Star), 1),
+            };*/
             var chosenEnemies = new List<EnemyGroupEntry.EntrySource>();
             int index = 7;
             foreach (var (enemyType, value) in potentialEnemies.Sample(__instance.GameRun.StationRng))
@@ -123,8 +133,8 @@ namespace EnemyRandomizer
             { typeof(GuihuoGreen), 25 },
             { typeof(GuihuoRed), 35 },
             { typeof(SickGirl), 25 },
-            { typeof(YinyangyuRed), 25 }, //yingyang orb
-            { typeof(YinyangyuBlue), 25 },
+            { typeof(YinyangyuRed), 20 }, //yingyang orb
+            { typeof(YinyangyuBlue), 30 },
             { typeof(DollBlue), 50 },
             { typeof(DollPurple), 50 },
             { typeof(FraudRabbit), 40 },
@@ -171,6 +181,7 @@ namespace EnemyRandomizer
             typeof(GuihuoGreen),
             typeof(GuihuoRed),
             typeof(SickGirl),
+            typeof(YinyangyuBlue),
             typeof(FraudRabbit),
             typeof(Bat),
             typeof(Luna),

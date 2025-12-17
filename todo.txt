@@ -14,8 +14,9 @@ add custom rules for invalid encounters - DONE
   - gloomy kappa rule above
 add custom formation that has 8-10 possible slots - DONE
   - still have max enemies at 5? or make it a config
-shift specific units to the back so hidden dmg isnt a thing (or atleast minimised)
-  - joyful kappa and gloomy kappa atleast
+shift specific units to the back so hidden dmg isnt a thing (or atleast minimised) - DONE
+  - just react on fp gain, and cancel/replace with end of turn fp gain
+star lockon spellcard can be manually replaced with end of turn lockon - DONE
 prevent back to back repeat of encounters
   - need custom save data to save previous encounter
   - also prevent repeat of number of enemies?

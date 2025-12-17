@@ -26,6 +26,7 @@ namespace EnemyRandomizer
         internal static DirectorySource directorySource = new DirectorySource(global::EnemyRandomizer.PInfo.GUID, "");
 
         internal static BatchLocalization jadeboxLoc = new BatchLocalization(directorySource, typeof(JadeBoxTemplate), "jadebox");
+        internal static BatchLocalization StatusEffectsBatchLoc = new BatchLocalization(directorySource, typeof(StatusEffectTemplate), "statusEffect");
 
         internal static string CUSTOM_EIGHT_FORMATION = "8custom";
         private void Awake()
@@ -39,6 +40,8 @@ namespace EnemyRandomizer
             EntityManager.RegisterSelf();
 
             harmony.PatchAll();
+
+            EnemyHiddenDamageHandler.RegisterHandlers();
 
             EnemyGroupTemplate.AddFormation(CUSTOM_EIGHT_FORMATION, new Dictionary<int, Vector2>()
             {
