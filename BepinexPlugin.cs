@@ -1,9 +1,9 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
 using HarmonyLib;
 using LBoLEntitySideloader;
 using LBoLEntitySideloader.Entities;
 using LBoLEntitySideloader.Resource;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
@@ -27,6 +27,7 @@ namespace EnemyRandomizer
 
         internal static BatchLocalization jadeboxLoc = new BatchLocalization(directorySource, typeof(JadeBoxTemplate), "jadebox");
 
+        internal static string CUSTOM_EIGHT_FORMATION = "8custom";
         private void Awake()
         {
             log = Logger;
@@ -38,6 +39,18 @@ namespace EnemyRandomizer
             EntityManager.RegisterSelf();
 
             harmony.PatchAll();
+
+            EnemyGroupTemplate.AddFormation(CUSTOM_EIGHT_FORMATION, new Dictionary<int, Vector2>()
+            {
+                {0, new Vector2(-1,2) },
+                {1, new Vector2(-1,-1) },
+                {2, new Vector2(0.5f,0.5f) },
+                {3, new Vector2(2,2) },
+                {4, new Vector2(2,-1) },
+                {5, new Vector2(3.5f,0.5f) },
+                {6, new Vector2(5,2) },
+                {7, new Vector2(5,-1) },
+            });
         }
 
         private void OnDestroy()

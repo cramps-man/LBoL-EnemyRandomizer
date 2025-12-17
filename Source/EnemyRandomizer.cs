@@ -77,7 +77,7 @@ namespace EnemyRandomizer
             } while (potentialEnemies.Count < MAX_ROLLS);
 
             var chosenEnemies = new List<EnemyGroupEntry.EntrySource>();
-            int index = 4;
+            int index = 7;
             foreach (var (enemyType, value) in potentialEnemies.Sample(__instance.GameRun.StationRng))
             {
                 chosenEnemies.Add(new EnemyGroupEntry.EntrySource(enemyType, index));
@@ -86,7 +86,7 @@ namespace EnemyRandomizer
 
             var enemyGroup = __instance.EnemyGroup;
             __instance.EnemyGroup = new EnemyGroup(enemyGroup.Id, chosenEnemies, enemyGroup.EnemyType,
-                "Five", enemyGroup.PlayerRootV2, enemyGroup.PreBattleDialogName, enemyGroup.PostBattleDialogName,
+                BepinexPlugin.CUSTOM_EIGHT_FORMATION, enemyGroup.PlayerRootV2, enemyGroup.PreBattleDialogName, enemyGroup.PostBattleDialogName,
                 enemyGroup.Hidden, enemyGroup.DebutTime, enemyGroup.Environment);
             foreach (var enemy in __instance.EnemyGroup)
             {

@@ -12,7 +12,7 @@ add custom rules for invalid encounters - DONE
   - support type enemies cant spawn solo, which will allow me to increase their weight
   - 1 summoner max
   - gloomy kappa rule above
-add custom formation that has 8-10 possible slots
+add custom formation that has 8-10 possible slots - DONE
   - still have max enemies at 5? or make it a config
 shift specific units to the back so hidden dmg isnt a thing (or atleast minimised)
   - joyful kappa and gloomy kappa atleast
