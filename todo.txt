@@ -3,12 +3,22 @@ adjust act 3 weights to be 25 higher - DONE
 add chance for higher weight enemies to occasionally show up - DONE
   - well maybe the increased rolls + roll top 5 will be enough to give a chance of tougher singles to show
   - added a first enemy min weight
-fix sunny softlocking if luna/star dont exist
+fix sunny softlocking if luna/star dont exist - DONE
   - adjust them to use their ults at battle start?
   - probs increase their weight if so
 add custom formation that has 8-10 possible slots
   - still have max enemies at 5? or make it a config
 fix gloomy kappa just spamming defend with no drones?
+  - gonna add a custom rule to not allow spawning without a drone or nitori
+add custom rules for invalid encounters
+  - support type enemies cant spawn solo, which will allow me to increase their weight
+  - 1 summoner max
+  - gloomy kappa rule above
+shift specific units to the back so hidden dmg isnt a thing (or atleast minimised)
+  - joyful kappa and gloomy kappa atleast
+prevent back to back repeat of encounters
+  - need custom save data to save previous encounter
+  - also prevent repeat of number of enemies?
 
 add config for each act
 add config to toggle elite nodes randomizing
