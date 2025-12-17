@@ -20,7 +20,8 @@ namespace EnemyRandomizer
     [HarmonyPatch]
     internal class EnemyRandomizer
     {
-        private const int MAX_ROLLS = 25;
+        private const int MAX_POTENTIAL_ENCOUNTERS = 25;
+        private const int MAX_ROLLS = 500;
         internal static List<Type> previousEncounter = new List<Type>();
 
         [HarmonyPatch(typeof(BattleStation), nameof(BattleStation.OnEnter))]
@@ -45,12 +46,13 @@ namespace EnemyRandomizer
             BepinexPlugin.log.LogInfo("Min weight leeway: " + weightLeeway);
             BepinexPlugin.log.LogInfo("Previous encounter: " + string.Join(", ", previousEncounter.ConvertAll<string>(t => t.Name)));
             var potentialEnemies = new List<List<ValueTuple<Type, int>>>();
+            int numRolls = 0;
             do
             {
                 var candidates = new List<ValueTuple<Type, int>>();
                 int firstEnemyMinWeight = __instance.GameRun.StationRng.NextInt(0, maxActWeight);
                 int maxEnemies = __instance.GameRun.StationRng.NextInt(3, 5);
-                BepinexPlugin.log.LogInfo("First enemy min weight: " + firstEnemyMinWeight + " - max enemies: " + maxEnemies);
+                BepinexPlugin.log.LogInfo("First enemy min weight: " + firstEnemyMinWeight + " - max enemies: " + maxEnemies + " - num roll: " + numRolls);
                 do
                 {
                     var cand = enemyWeights.Where(w => w.Value >= firstEnemyMinWeight && w.Value <= maxActWeight).SampleOrDefault(__instance.GameRun.StationRng);
@@ -66,7 +68,9 @@ namespace EnemyRandomizer
                     BepinexPlugin.log.LogInfo("To remove: " + toRemove.Item1.Name);
                     candidates.Remove(toRemove);
                 }
-                //add safety mechanism, for max 500 rolls or something, and break
+                if (++numRolls > MAX_ROLLS)
+                    break;
+
                 BepinexPlugin.log.LogInfo("Total weight: " + candidates.Sum(c => c.Item2));
                 if (candidates.Sum(c => c.Item2) < weightLeeway)
                 {
@@ -77,7 +81,12 @@ namespace EnemyRandomizer
                     continue;
                 BepinexPlugin.log.LogInfo("===Added enemy group===");
                 potentialEnemies.Add(candidates);
-            } while (potentialEnemies.Count < MAX_ROLLS);
+            } while (potentialEnemies.Count < MAX_POTENTIAL_ENCOUNTERS);
+            if (potentialEnemies.Count <= 0)
+            {
+                BepinexPlugin.log.LogInfo("===Potential encounters empty===");
+                return;
+            }
 
             /*var chosenEnemies = new List<EnemyGroupEntry.EntrySource>()
             {
@@ -117,14 +126,14 @@ namespace EnemyRandomizer
             { "1-1", 40 },
             { "1-2", 50 },
             { "1-3", 60 },
-            { "1-e", 80 },
-            { "2-1", 90 },
-            { "2-2", 105 },
-            { "2-3", 120 },
-            { "2-e", 160 },
-            { "3-1", 175 },
-            { "3-2", 200 },
-            { "3-3", 225 },
+            { "1-e", 90 },
+            { "2-1", 100 },
+            { "2-2", 115 },
+            { "2-3", 130 },
+            { "2-e", 175 },
+            { "3-1", 190 },
+            { "3-2", 210 },
+            { "3-3", 230 },
             { "3-e", 300 },
         };
 
@@ -155,7 +164,7 @@ namespace EnemyRandomizer
             { typeof(Rin), 60 },
             { typeof(Purifier), 50 },
             { typeof(Scout), 50 },
-            { typeof(WaterGirl), 90 },
+            { typeof(WaterGirl), 100 },
             { typeof(Yaoshi), 45 }, //floating rock
             { typeof(Fox), 150 },
             { typeof(BatLord), 70 },
