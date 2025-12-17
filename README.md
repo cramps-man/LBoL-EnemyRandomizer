@@ -2,12 +2,17 @@
 
 Each enemy in the game is given a weight value based on difficulty.  
 The total weight of all enemies for this battle can not go over the maximum, based on the current act section.  
-Balance is still ongoing, and there may be behavioural issues with some enemies (I've had to disable Sunny since she softlocks the game)  
+Balance is still ongoing, and there may be behavioural issues with some enemies (have mitigated most of the main issues)  
+
+## Custom rules for invalid encounters
+
+ - Support type units can not spawn solo
+ - Can not be more than 1 summoner type unit
+ - Gloomy kappa can not spawn without a drone or nitori
+ - Can not match the enemies from the previous encounter
 
 ## For future
 
 Add config to allow the act section maximum weights to be adjusted.  
 Add configs regarding allowing elites.  
-Fix Sunny from softlocking, and make the 3 fairies use their spellcard on lunatic 1st turn.  
-Update gloomy kappa to not just defend if there are no drones?  
 Other various misc things.  
