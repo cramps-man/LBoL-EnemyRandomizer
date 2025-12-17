@@ -2,6 +2,7 @@
 using HarmonyLib;
 using LBoLEntitySideloader;
 using LBoLEntitySideloader.Entities;
+using LBoLEntitySideloader.PersistentValues;
 using LBoLEntitySideloader.Resource;
 using System.Collections.Generic;
 using System.Reflection;
@@ -27,8 +28,9 @@ namespace EnemyRandomizer
 
         internal static BatchLocalization jadeboxLoc = new BatchLocalization(directorySource, typeof(JadeBoxTemplate), "jadebox");
         internal static BatchLocalization StatusEffectsBatchLoc = new BatchLocalization(directorySource, typeof(StatusEffectTemplate), "statusEffect");
-
         internal static string CUSTOM_EIGHT_FORMATION = "8custom";
+
+        internal static CustomGameRunSaveData previousEncounterSaveData = new PreviousEncounterSaveData();
         private void Awake()
         {
             log = Logger;
@@ -38,6 +40,8 @@ namespace EnemyRandomizer
             gameObject.hideFlags = HideFlags.HideAndDontSave;
 
             EntityManager.RegisterSelf();
+
+            previousEncounterSaveData.RegisterSelf(PInfo.GUID);
 
             harmony.PatchAll();
 

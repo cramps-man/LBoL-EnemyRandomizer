@@ -21,6 +21,8 @@ namespace EnemyRandomizer
 
         private static void OnPlayerStatusEffectAdding(StatusEffectApplyEventArgs args)
         {
+            if (!GameMaster.Instance.CurrentGameRun.HasJadeBox<EnemyRandomizerJadebox>())
+                return;
             var battle = GameMaster.Instance.CurrentGameRun.Battle;
             if (battle == null)
                 return;
@@ -35,6 +37,8 @@ namespace EnemyRandomizer
 
         private static void OnBattleStarted(GameEventArgs args)
         {
+            if (!GameMaster.Instance.CurrentGameRun.HasJadeBox<EnemyRandomizerJadebox>())
+                return;
             var battle = GameMaster.Instance.CurrentGameRun.Battle;
             if (battle == null)
                 return;

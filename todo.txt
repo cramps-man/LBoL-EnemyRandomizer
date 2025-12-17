@@ -16,10 +16,12 @@ add custom formation that has 8-10 possible slots - DONE
   - still have max enemies at 5? or make it a config
 shift specific units to the back so hidden dmg isnt a thing (or atleast minimised) - DONE
   - just react on fp gain, and cancel/replace with end of turn fp gain
+  - may need to prevent happening on boss enemies incase there's issues, but can leave for now
 star lockon spellcard can be manually replaced with end of turn lockon - DONE
-prevent back to back repeat of encounters
+prevent back to back repeat of encounters - DONE
   - need custom save data to save previous encounter
   - also prevent repeat of number of enemies?
+    - leave this for now
 
 add config for each act
 add config to toggle elite nodes randomizing

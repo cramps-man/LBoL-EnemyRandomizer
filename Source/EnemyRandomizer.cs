@@ -21,6 +21,7 @@ namespace EnemyRandomizer
     internal class EnemyRandomizer
     {
         private const int MAX_ROLLS = 25;
+        internal static List<Type> previousEncounter = new List<Type>();
 
         [HarmonyPatch(typeof(BattleStation), nameof(BattleStation.OnEnter))]
         private static void Postfix(BattleStation __instance)
@@ -42,6 +43,7 @@ namespace EnemyRandomizer
             BepinexPlugin.log.LogInfo("Max Act weight: " + maxActWeight);
             int weightLeeway = maxActWeight - 10 - maxActWeight / 8;
             BepinexPlugin.log.LogInfo("Min weight leeway: " + weightLeeway);
+            BepinexPlugin.log.LogInfo("Previous encounter: " + string.Join(", ", previousEncounter.ConvertAll<string>(t => t.Name)));
             var potentialEnemies = new List<List<ValueTuple<Type, int>>>();
             do
             {
@@ -56,12 +58,12 @@ namespace EnemyRandomizer
                     if (cand.Key == null)
                         continue;
                     candidates.Add((cand.Key, cand.Value));
-                    BepinexPlugin.log.LogInfo("chosen cand: " + cand.Key + " - " + cand.Value + " - sum: " + candidates.Sum(c => c.Item2));
+                    BepinexPlugin.log.LogInfo("chosen cand: " + cand.Key.Name + " - " + cand.Value + " - sum: " + candidates.Sum(c => c.Item2));
                 } while (candidates.Sum(c => c.Item2) < maxActWeight && candidates.Count < maxEnemies);
                 if (candidates.Sum(c => c.Item2) > maxActWeight)
                 {
                     var toRemove = candidates.Last();
-                    BepinexPlugin.log.LogInfo("To remove: " + toRemove);
+                    BepinexPlugin.log.LogInfo("To remove: " + toRemove.Item1.Name);
                     candidates.Remove(toRemove);
                 }
                 //add safety mechanism, for max 500 rolls or something, and break
@@ -88,8 +90,10 @@ namespace EnemyRandomizer
             };*/
             var chosenEnemies = new List<EnemyGroupEntry.EntrySource>();
             int index = 7;
+            previousEncounter.Clear();
             foreach (var (enemyType, value) in potentialEnemies.Sample(__instance.GameRun.StationRng))
             {
+                previousEncounter.Add(enemyType);
                 chosenEnemies.Add(new EnemyGroupEntry.EntrySource(enemyType, index));
                 index--;
             };
@@ -214,6 +218,11 @@ namespace EnemyRandomizer
 
         private static bool IsValidEncounter(List<ValueTuple<Type, int>> candidates)
         {
+            if (previousEncounter.Count != 0 && candidates.Where(c => previousEncounter.Contains(c.Item1)).Count() == previousEncounter.Count)
+            {
+                BepinexPlugin.log.LogInfo("INVALID: matches previous encounter");
+                return false;
+            }
             if (candidates.Count == 1 && candidates.Any(c => supportEnemies.Contains(c.Item1)))
             {
                 BepinexPlugin.log.LogInfo("INVALID: solo support unit");
