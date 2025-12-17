@@ -6,14 +6,14 @@ add chance for higher weight enemies to occasionally show up - DONE
 fix sunny softlocking if luna/star dont exist - DONE
   - adjust them to use their ults at battle start?
   - probs increase their weight if so
-add custom formation that has 8-10 possible slots
-  - still have max enemies at 5? or make it a config
-fix gloomy kappa just spamming defend with no drones?
+fix gloomy kappa just spamming defend with no drones? - DONE
   - gonna add a custom rule to not allow spawning without a drone or nitori
-add custom rules for invalid encounters
+add custom rules for invalid encounters - DONE
   - support type enemies cant spawn solo, which will allow me to increase their weight
   - 1 summoner max
   - gloomy kappa rule above
+add custom formation that has 8-10 possible slots
+  - still have max enemies at 5? or make it a config
 shift specific units to the back so hidden dmg isnt a thing (or atleast minimised)
   - joyful kappa and gloomy kappa atleast
 prevent back to back repeat of encounters

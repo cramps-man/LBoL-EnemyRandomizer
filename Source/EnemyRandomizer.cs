@@ -63,12 +63,15 @@ namespace EnemyRandomizer
                     BepinexPlugin.log.LogInfo("To remove: " + toRemove);
                     candidates.Remove(toRemove);
                 }
+                //add safety mechanism, for max 500 rolls or something, and break
                 BepinexPlugin.log.LogInfo("Total weight: " + candidates.Sum(c => c.Item2));
                 if (candidates.Sum(c => c.Item2) < weightLeeway)
                 {
-                    BepinexPlugin.log.LogInfo("===Below min weight===");
+                    BepinexPlugin.log.LogInfo("INVALID: Below min weight");
                     continue;
                 }
+                if (!IsValidEncounter(candidates))
+                    continue;
                 BepinexPlugin.log.LogInfo("===Added enemy group===");
                 potentialEnemies.Add(candidates);
             } while (potentialEnemies.Count < MAX_ROLLS);
@@ -116,17 +119,17 @@ namespace EnemyRandomizer
             { typeof(WhiteFairy), 30 },
             { typeof(RavenWen), 15 },
             { typeof(RavenGuo), 15 },
-            { typeof(GuihuoBlue), 15 }, //spirit
-            { typeof(GuihuoGreen), 15 },
-            { typeof(GuihuoRed), 25 },
-            { typeof(SickGirl), 20 },
+            { typeof(GuihuoBlue), 25 }, //spirit
+            { typeof(GuihuoGreen), 25 },
+            { typeof(GuihuoRed), 35 },
+            { typeof(SickGirl), 25 },
             { typeof(YinyangyuRed), 25 }, //yingyang orb
             { typeof(YinyangyuBlue), 25 },
             { typeof(DollBlue), 50 },
             { typeof(DollPurple), 50 },
-            { typeof(FraudRabbit), 25 },
+            { typeof(FraudRabbit), 40 },
             { typeof(BlackFairy), 50 },
-            { typeof(Bat), 20 },
+            { typeof(Bat), 40 },
             { typeof(MaoyuBlue), 10 }, //kedama
             { typeof(Maoyu), 10 },
             { typeof(MaoyuRed), 15 },
@@ -136,14 +139,14 @@ namespace EnemyRandomizer
             { typeof(Star), 60 },
             { typeof(Aya), 60 },
             { typeof(Rin), 60 },
-            { typeof(Purifier), 45 },
-            { typeof(Scout), 45 },
+            { typeof(Purifier), 50 },
+            { typeof(Scout), 50 },
             { typeof(WaterGirl), 90 },
             { typeof(Yaoshi), 45 }, //floating rock
             { typeof(Fox), 150 },
-            { typeof(BatLord), 50 },
-            { typeof(HetongKailang), 30 }, //joy kappa
-            { typeof(HetongYinchen), 20 }, //gloomy kappa
+            { typeof(BatLord), 70 },
+            { typeof(HetongKailang), 60 }, //joy kappa
+            { typeof(HetongYinchen), 40 }, //gloomy kappa
             { typeof(ShenlingPurple), 30 }, //gold spirit
             { typeof(ShenlingWhite), 30 },
             { typeof(Nitori), 120 },
@@ -161,5 +164,61 @@ namespace EnemyRandomizer
             { typeof(Siji), 225 },
             { typeof(Doremy), 225 },
         };
+
+        private static List<Type> supportEnemies = new List<Type>()
+        {
+            typeof(GuihuoBlue),
+            typeof(GuihuoGreen),
+            typeof(GuihuoRed),
+            typeof(SickGirl),
+            typeof(FraudRabbit),
+            typeof(Bat),
+            typeof(Luna),
+            typeof(Star),
+            typeof(Purifier),
+            typeof(Scout),
+            typeof(Fox),
+            typeof(BatLord),
+            typeof(HetongKailang),
+            typeof(HetongYinchen),
+            typeof(SuwakoLimao),
+        };
+        private static List<Type> summonerEnemies = new List<Type>()
+        {
+            typeof(Rin),
+            typeof(Nitori),
+            typeof(Kokoro),
+            typeof(KanakoLimao),
+            typeof(Clownpiece),
+            typeof(Siji),
+            typeof(Doremy),
+        };
+        private static List<Type> gloomyKappaRequirements = new List<Type>()
+        {
+            typeof(Purifier),
+            typeof(Scout),
+            typeof(Terminator),
+            typeof(Nitori),
+        };
+
+        private static bool IsValidEncounter(List<ValueTuple<Type, int>> candidates)
+        {
+            if (candidates.Count == 1 && candidates.Any(c => supportEnemies.Contains(c.Item1)))
+            {
+                BepinexPlugin.log.LogInfo("INVALID: solo support unit");
+                return false;
+            }
+            if (candidates.Where(c => summonerEnemies.Contains(c.Item1)).Count() > 1)
+            {
+                BepinexPlugin.log.LogInfo("INVALID: more than 1 summoner");
+                return false;
+            }
+            if (candidates.Any(c => c.Item1 == typeof(HetongYinchen)) && !candidates.Any(c => gloomyKappaRequirements.Contains(c.Item1)))
+            {
+                BepinexPlugin.log.LogInfo("INVALID: gloomy kappa without drone or nitori");
+                return false;
+            }
+            return true;
+        }
     }
 }
