@@ -228,7 +228,7 @@ namespace EnemyRandomizer
 
         private static bool IsValidEncounter(List<ValueTuple<Type, int>> candidates)
         {
-            if (previousEncounter.Count != 0 && candidates.Where(c => previousEncounter.Contains(c.Item1)).Count() == previousEncounter.Count)
+            if (previousEncounter.Count != 0 && previousEncounter.Where(pe => candidates.Select(c => c.Item1).Contains(pe)).Count() == previousEncounter.Count)
             {
                 BepinexPlugin.log.LogInfo("INVALID: matches previous encounter");
                 return false;
