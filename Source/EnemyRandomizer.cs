@@ -198,6 +198,7 @@ namespace EnemyRandomizer
             typeof(YinyangyuBlue),
             typeof(FraudRabbit),
             typeof(Bat),
+            typeof(Sunny),
             typeof(Luna),
             typeof(Star),
             typeof(Purifier),
