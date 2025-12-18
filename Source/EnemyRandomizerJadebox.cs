@@ -61,7 +61,8 @@ namespace EnemyRandomizer
                 return;
 
             int maxWeightForAct = EnemyRandomizer.GetActWeight(GameRun.CurrentStage.Level, 0, true);
-            int enemyWeight = EnemyRandomizer.enemyWeights[args.Unit.GetType()];
+            if (!EnemyRandomizer.enemyWeights.TryGetValue(args.Unit.GetType(), out int enemyWeight))
+                return;
             float percent = (float)enemyWeight / maxWeightForAct;
             BepinexPlugin.log.LogInfo("Act max weight: " + maxWeightForAct + " - Enemy weight: " + enemyWeight + " - Percentage: " + percent);
             int bonusPower = GameRun.BattleRng.NextInt(1, 3);

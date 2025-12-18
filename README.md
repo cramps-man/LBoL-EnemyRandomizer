@@ -11,6 +11,11 @@ Balance is still ongoing, and there may be behavioural issues with some enemies 
  - Gloomy kappa can not spawn without a drone or nitori
  - Can not match the enemies from the previous encounter
 
+## Changes to vanilla game
+
+ - Enemies that gain Firepower now gain Delayed Firepower, to prevent hidden damage mid enemy turn
+ - Power gain is overridden and now scales based on the enemy's weight and the act weight. Overall power gain is probably a bit higher than vanilla
+
 ## For future
 
 Add config to allow the act section maximum weights to be adjusted.  

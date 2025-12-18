@@ -90,7 +90,7 @@ namespace EnemyRandomizer
 
             /*var chosenEnemies = new List<EnemyGroupEntry.EntrySource>()
             {
-                new EnemyGroupEntry.EntrySource(typeof(Aya), 2),
+                new EnemyGroupEntry.EntrySource(typeof(Nitori), 2),
             };*/
             var chosenEnemies = new List<EnemyGroupEntry.EntrySource>();
             int index = 7;

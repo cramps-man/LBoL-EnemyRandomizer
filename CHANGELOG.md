@@ -1,3 +1,8 @@
+## 1.2.1
+
+- Adjusted power gain to be based on the enemy's weight and act weight
+- Further adjustments of enemy/act weights
+
 ## 1.2.0
 
 - Fixed Sunny to not softlock, and make the 3 fairies use their spellcard 1st turn
