@@ -1,3 +1,7 @@
+## 1.2.2
+
+Fixed issue with enemies that didn't have a weight value, softlocking the game when they died
+
 ## 1.2.1
 
 - Adjusted power gain to be based on the enemy's weight and act weight

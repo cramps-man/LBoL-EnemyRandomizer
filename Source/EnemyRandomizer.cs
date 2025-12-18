@@ -51,8 +51,9 @@ namespace EnemyRandomizer
             {
                 var candidates = new List<ValueTuple<Type, int>>();
                 int firstEnemyMinWeight = __instance.GameRun.StationRng.NextInt(0, maxActWeight);
+                int minEnemies = __instance.GameRun.StationRng.NextInt(1, 2);
                 int maxEnemies = __instance.GameRun.StationRng.NextInt(3, 5);
-                BepinexPlugin.log.LogInfo("First enemy min weight: " + firstEnemyMinWeight + " - max enemies: " + maxEnemies + " - num roll: " + numRolls);
+                BepinexPlugin.log.LogInfo("First enemy min weight: " + firstEnemyMinWeight + " - min enemies: " + minEnemies + " - max enemies: " + maxEnemies + " - num roll: " + numRolls);
                 do
                 {
                     var cand = enemyWeights.Where(w => w.Value >= firstEnemyMinWeight && w.Value <= maxActWeight).SampleOrDefault(__instance.GameRun.StationRng);
@@ -75,6 +76,11 @@ namespace EnemyRandomizer
                 if (candidates.Sum(c => c.Item2) < weightLeeway)
                 {
                     BepinexPlugin.log.LogInfo("INVALID: Below min weight");
+                    continue;
+                }
+                if (candidates.Count < minEnemies)
+                {
+                    BepinexPlugin.log.LogInfo("INVALID: Less than min enemies");
                     continue;
                 }
                 if (!IsValidEncounter(candidates))
@@ -147,7 +153,7 @@ namespace EnemyRandomizer
             { typeof(DollPurple), 50 },
             { typeof(FraudRabbit), 40 },
             { typeof(BlackFairy), 50 },
-            { typeof(Bat), 40 },
+            { typeof(Bat), 35 },
             { typeof(MaoyuBlue), 10 }, //kedama
             { typeof(Maoyu), 15 }, //angy firepower kedama
             { typeof(MaoyuRed), 10 },
@@ -177,7 +183,7 @@ namespace EnemyRandomizer
             { typeof(HardworkRabbit), 150 },
             { typeof(LazyRabbit), 150 },
             { typeof(KanakoLimao), 120 },
-            { typeof(SuwakoLimao), 100 },
+            { typeof(SuwakoLimao), 120 },
             { typeof(Clownpiece), 230 },
             { typeof(Siji), 230 },
             { typeof(Doremy), 230 },
