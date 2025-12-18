@@ -90,12 +90,7 @@ namespace EnemyRandomizer
 
             /*var chosenEnemies = new List<EnemyGroupEntry.EntrySource>()
             {
-                new EnemyGroupEntry.EntrySource(typeof(HetongKailang), 2),
-                new EnemyGroupEntry.EntrySource(typeof(HetongKailang), 3),
-                new EnemyGroupEntry.EntrySource(typeof(Nitori), 4),
-                new EnemyGroupEntry.EntrySource(typeof(HetongKailang), 5),
-                new EnemyGroupEntry.EntrySource(typeof(HetongKailang), 6),
-                new EnemyGroupEntry.EntrySource(typeof(Star), 1),
+                new EnemyGroupEntry.EntrySource(typeof(Aya), 2),
             };*/
             var chosenEnemies = new List<EnemyGroupEntry.EntrySource>();
             int index = 7;
@@ -116,12 +111,12 @@ namespace EnemyRandomizer
                 enemy.EnterGameRun(__instance.GameRun);
             }
         }
-        private static int GetActWeight(int act, int actSection, bool isElite)
+        internal static int GetActWeight(int act, int actSection, bool isElite)
         {
             return isElite ? actWeights[act + "-e"] : actWeights[act + "-" + actSection];
         }
 
-        private static Dictionary<string, int> actWeights = new Dictionary<string, int>()
+        internal static Dictionary<string, int> actWeights = new Dictionary<string, int>()
         {
             { "1-1", 40 },
             { "1-2", 50 },
@@ -137,7 +132,7 @@ namespace EnemyRandomizer
             { "3-e", 300 },
         };
 
-        private static Dictionary<Type, int> enemyWeights = new Dictionary<Type, int>()
+        internal static Dictionary<Type, int> enemyWeights = new Dictionary<Type, int>()
         {
             { typeof(WhiteFairy), 30 },
             { typeof(RavenWen), 15 },
@@ -154,8 +149,8 @@ namespace EnemyRandomizer
             { typeof(BlackFairy), 50 },
             { typeof(Bat), 40 },
             { typeof(MaoyuBlue), 10 }, //kedama
-            { typeof(Maoyu), 10 },
-            { typeof(MaoyuRed), 15 },
+            { typeof(Maoyu), 15 }, //angy firepower kedama
+            { typeof(MaoyuRed), 10 },
             { typeof(MaoyuBlack), 25 },
             { typeof(Sunny), 45 },
             { typeof(Luna), 60 },
@@ -177,15 +172,15 @@ namespace EnemyRandomizer
             { typeof(Kokoro), 120 },
             { typeof(YaTiangou), 120 }, //crow tengu
             { typeof(LangTiangou), 130 }, //wolf tengu
-            { typeof(LoveGirl), 150 },
+            { typeof(LoveGirl), 200 },
             { typeof(Terminator), 100 },
             { typeof(HardworkRabbit), 150 },
             { typeof(LazyRabbit), 150 },
             { typeof(KanakoLimao), 120 },
             { typeof(SuwakoLimao), 100 },
-            { typeof(Clownpiece), 225 },
-            { typeof(Siji), 225 },
-            { typeof(Doremy), 225 },
+            { typeof(Clownpiece), 230 },
+            { typeof(Siji), 230 },
+            { typeof(Doremy), 230 },
         };
 
         private static List<Type> supportEnemies = new List<Type>()

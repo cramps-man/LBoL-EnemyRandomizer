@@ -3,6 +3,7 @@ using LBoL.ConfigData;
 using LBoL.Core;
 using LBoL.Core.Battle;
 using LBoL.Core.Battle.BattleActions;
+using LBoL.Core.Stations;
 using LBoL.Core.StatusEffects;
 using LBoL.EntityLib.EnemyUnits.Character;
 using LBoLEntitySideloader;
@@ -51,6 +52,22 @@ namespace EnemyRandomizer
         {
             HandleBattleEvent(Battle.BattleStarted, OnBattleStarted);
             ReactBattleEvent(Battle.Player.StatusEffectAdding, OnPlayerStatusEffectAdding);
+            HandleBattleEvent(Battle.EnemyPointGenerating, OnEnemyPointGenerating);
+        }
+
+        private void OnEnemyPointGenerating(DieEventArgs args)
+        {
+            if (!(GameRun.CurrentStation is EnemyStation) && !(GameRun.CurrentStation is EliteEnemyStation))
+                return;
+
+            int maxWeightForAct = EnemyRandomizer.GetActWeight(GameRun.CurrentStage.Level, 0, true);
+            int enemyWeight = EnemyRandomizer.enemyWeights[args.Unit.GetType()];
+            float percent = (float)enemyWeight / maxWeightForAct;
+            BepinexPlugin.log.LogInfo("Act max weight: " + maxWeightForAct + " - Enemy weight: " + enemyWeight + " - Percentage: " + percent);
+            int bonusPower = GameRun.BattleRng.NextInt(1, 3);
+            int newPower = (int)(30 * percent);
+            BepinexPlugin.log.LogInfo("New enemy power: " + newPower + " - Bonus power: " + bonusPower);
+            args.Power = newPower + bonusPower;
         }
 
         private IEnumerable<BattleAction> OnPlayerStatusEffectAdding(StatusEffectApplyEventArgs args)
