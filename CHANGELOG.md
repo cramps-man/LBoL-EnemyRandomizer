@@ -1,3 +1,8 @@
+## 1.2.3
+
+- Adjusted rng to have less chances for solo encounters at certain weights
+- Further adjustments of enemy/act weights
+
 ## 1.2.2
 
 Fixed issue with enemies that didn't have a weight value, softlocking the game when they died
