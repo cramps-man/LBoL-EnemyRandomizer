@@ -1,3 +1,9 @@
+## 1.3.0
+
+- Adjusted weights for each enemy to give them a value for each act. This will allow scaling enemies to be powerful later, without having a weak encounter earlier on
+- Allow enemies to spawn in random slots
+- Further adjustments of enemy/act weights and rng
+
 ## 1.2.3
 
 - Adjusted rng to have less chances for solo encounters at certain weights
