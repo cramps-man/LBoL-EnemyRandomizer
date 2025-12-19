@@ -50,6 +50,8 @@ namespace EnemyRandomizer
     {
         protected override void OnEnterBattle()
         {
+            if (!(GameRun.CurrentStation is EnemyStation) && !(GameRun.CurrentStation is EliteEnemyStation))
+                return;
             HandleBattleEvent(Battle.BattleStarted, OnBattleStarted);
             ReactBattleEvent(Battle.Player.StatusEffectAdding, OnPlayerStatusEffectAdding);
             HandleBattleEvent(Battle.EnemyPointGenerating, OnEnemyPointGenerating);
@@ -57,9 +59,6 @@ namespace EnemyRandomizer
 
         private void OnEnemyPointGenerating(DieEventArgs args)
         {
-            if (!(GameRun.CurrentStation is EnemyStation) && !(GameRun.CurrentStation is EliteEnemyStation))
-                return;
-
             int maxWeightForAct = EnemyRandomizer.GetActWeight(GameRun.CurrentStage.Level, 0, true);
             if (!EnemyRandomizer.enemyWeights.TryGetValue(args.Unit.GetType(), out EnemyRandomizer.EnemyActWeights enemyWeights))
                 return;
