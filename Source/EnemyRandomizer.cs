@@ -45,35 +45,36 @@ namespace EnemyRandomizer
             int weightLeeway = maxActWeight - 10 - maxActWeight / 8;
             BepinexPlugin.log.LogInfo("Min weight leeway: " + weightLeeway);
             BepinexPlugin.log.LogInfo("Previous encounter: " + string.Join(", ", previousEncounter.ConvertAll<string>(t => t.Name)));
-            var potentialEnemies = new List<List<ValueTuple<Type, int>>>();
+            var potentialEnemies = new List<List<(Type type, int weight)>>();
             int numRolls = 0;
             do
             {
-                var candidates = new List<ValueTuple<Type, int>>();
+                var candidates = new List<(Type type, int weight)>();
                 int firstEnemyMinWeight = __instance.GameRun.StationRng.NextInt(0, maxActWeight);
                 int minEnemies = __instance.GameRun.StationRng.NextInt(1, 2);
                 int maxEnemies = __instance.GameRun.StationRng.NextInt(3, 5);
                 BepinexPlugin.log.LogInfo("First enemy min weight: " + firstEnemyMinWeight + " - min enemies: " + minEnemies + " - max enemies: " + maxEnemies + " - num roll: " + numRolls);
                 do
                 {
-                    var cand = enemyWeights.Where(w => w.Value >= firstEnemyMinWeight && w.Value <= maxActWeight).SampleOrDefault(__instance.GameRun.StationRng);
+                    var cand = enemyWeights.Where(w => w.Value.GetWeight(__instance.Stage.Level) >= firstEnemyMinWeight && w.Value.GetWeight(__instance.Stage.Level) <= maxActWeight).SampleOrDefault(__instance.GameRun.StationRng);
                     firstEnemyMinWeight = 0;
                     if (cand.Key == null)
                         continue;
-                    candidates.Add((cand.Key, cand.Value));
-                    BepinexPlugin.log.LogInfo("chosen cand: " + cand.Key.Name + " - " + cand.Value + " - sum: " + candidates.Sum(c => c.Item2));
-                } while (candidates.Sum(c => c.Item2) < maxActWeight && candidates.Count < maxEnemies);
-                if (candidates.Sum(c => c.Item2) > maxActWeight)
+                    int candWeight = cand.Value.GetWeight(__instance.Stage.Level);
+                    candidates.Add((cand.Key, candWeight));
+                    BepinexPlugin.log.LogInfo("chosen cand: " + cand.Key.Name + " - " + candWeight + " - sum: " + candidates.Sum(c => c.weight));
+                } while (candidates.Sum(c => c.weight) < maxActWeight && candidates.Count < maxEnemies);
+                if (candidates.Sum(c => c.weight) > maxActWeight)
                 {
                     var toRemove = candidates.Last();
-                    BepinexPlugin.log.LogInfo("To remove: " + toRemove.Item1.Name);
+                    BepinexPlugin.log.LogInfo("To remove: " + toRemove.type.Name);
                     candidates.Remove(toRemove);
                 }
                 if (++numRolls > MAX_ROLLS)
                     break;
 
-                BepinexPlugin.log.LogInfo("Total weight: " + candidates.Sum(c => c.Item2));
-                if (candidates.Sum(c => c.Item2) < weightLeeway)
+                BepinexPlugin.log.LogInfo("Total weight: " + candidates.Sum(c => c.weight));
+                if (candidates.Sum(c => c.weight) < weightLeeway)
                 {
                     BepinexPlugin.log.LogInfo("INVALID: Below min weight");
                     continue;
@@ -138,56 +139,78 @@ namespace EnemyRandomizer
             { "3-e", 300 },
         };
 
-        internal static Dictionary<Type, int> enemyWeights = new Dictionary<Type, int>()
+        internal static Dictionary<Type, EnemyActWeights> enemyWeights = new Dictionary<Type, EnemyActWeights>()
         {
-            { typeof(WhiteFairy), 30 },
-            { typeof(RavenWen), 15 },
-            { typeof(RavenGuo), 15 },
-            { typeof(GuihuoBlue), 25 }, //spirit
-            { typeof(GuihuoGreen), 25 },
-            { typeof(GuihuoRed), 35 },
-            { typeof(SickGirl), 25 },
-            { typeof(YinyangyuRed), 20 }, //yingyang orb
-            { typeof(YinyangyuBlue), 30 },
-            { typeof(DollBlue), 50 },
-            { typeof(DollPurple), 50 },
-            { typeof(FraudRabbit), 40 },
-            { typeof(BlackFairy), 50 },
-            { typeof(Bat), 35 },
-            { typeof(MaoyuBlue), 10 }, //kedama
-            { typeof(Maoyu), 15 }, //angy firepower kedama
-            { typeof(MaoyuRed), 10 },
-            { typeof(MaoyuBlack), 25 },
-            { typeof(Sunny), 45 },
-            { typeof(Luna), 60 },
-            { typeof(Star), 60 },
-            { typeof(Aya), 60 },
-            { typeof(Rin), 60 },
-            { typeof(Purifier), 50 },
-            { typeof(Scout), 50 },
-            { typeof(WaterGirl), 100 },
-            { typeof(Yaoshi), 45 }, //floating rock
-            { typeof(Fox), 150 },
-            { typeof(BatLord), 70 },
-            { typeof(HetongKailang), 60 }, //joy kappa
-            { typeof(HetongYinchen), 40 }, //gloomy kappa
-            { typeof(ShenlingPurple), 30 }, //gold spirit
-            { typeof(ShenlingWhite), 30 },
-            { typeof(Nitori), 120 },
-            { typeof(Youmu), 120 },
-            { typeof(Kokoro), 120 },
-            { typeof(YaTiangou), 120 }, //crow tengu
-            { typeof(LangTiangou), 130 }, //wolf tengu
-            { typeof(LoveGirl), 200 },
-            { typeof(Terminator), 100 },
-            { typeof(HardworkRabbit), 150 },
-            { typeof(LazyRabbit), 150 },
-            { typeof(KanakoLimao), 120 },
-            { typeof(SuwakoLimao), 120 },
-            { typeof(Clownpiece), 230 },
-            { typeof(Siji), 230 },
-            { typeof(Doremy), 230 },
+            { typeof(WhiteFairy), new EnemyActWeights(30, 30, 30) },
+            { typeof(RavenWen), new EnemyActWeights(15, 15, 15) },
+            { typeof(RavenGuo), new EnemyActWeights(15, 15, 15) },
+            { typeof(GuihuoBlue), new EnemyActWeights(25, 25, 25) }, //spirit
+            { typeof(GuihuoGreen), new EnemyActWeights(25, 25, 25) },
+            { typeof(GuihuoRed), new EnemyActWeights(35, 35, 35) },
+            { typeof(SickGirl), new EnemyActWeights(25, 25, 25) },
+            { typeof(YinyangyuRed), new EnemyActWeights(20, 20, 20) }, //yingyang orb
+            { typeof(YinyangyuBlue), new EnemyActWeights(30, 30, 30) },
+            { typeof(DollBlue), new EnemyActWeights(50, 50, 50) },
+            { typeof(DollPurple), new EnemyActWeights(50, 50, 50) },
+            { typeof(FraudRabbit), new EnemyActWeights(40, 40, 40) },
+            { typeof(BlackFairy), new EnemyActWeights(50, 50, 50) },
+            { typeof(Bat), new EnemyActWeights(35, 35, 35) },
+            { typeof(MaoyuBlue), new EnemyActWeights(10, 10, 10) }, //kedama
+            { typeof(Maoyu), new EnemyActWeights(15, 15, 15) }, //angy firepower kedama
+            { typeof(MaoyuRed), new EnemyActWeights(10, 10, 10) },
+            { typeof(MaoyuBlack), new EnemyActWeights(25, 25, 25) },
+            { typeof(Sunny), new EnemyActWeights(45, 45, 45) },
+            { typeof(Luna), new EnemyActWeights(60, 60, 60) },
+            { typeof(Star), new EnemyActWeights(60, 60, 60) },
+            { typeof(Aya), new EnemyActWeights(60, 60, 60) },
+            { typeof(Rin), new EnemyActWeights(60, 60, 60) },
+            { typeof(Purifier), new EnemyActWeights(50, 50, 50) },
+            { typeof(Scout), new EnemyActWeights(50, 50, 50) },
+            { typeof(WaterGirl), new EnemyActWeights(100, 100, 100) },
+            { typeof(Yaoshi), new EnemyActWeights(45, 45, 45) }, //floating rock
+            { typeof(Fox), new EnemyActWeights(150, 150, 150) },
+            { typeof(BatLord), new EnemyActWeights(70, 70, 70) },
+            { typeof(HetongKailang), new EnemyActWeights(60, 60, 60) }, //joy kappa
+            { typeof(HetongYinchen), new EnemyActWeights(40, 40, 40) }, //gloomy kappa
+            { typeof(ShenlingPurple), new EnemyActWeights(30, 30, 30) }, //gold spirit
+            { typeof(ShenlingWhite), new EnemyActWeights(30, 30, 30) },
+            { typeof(Nitori), new EnemyActWeights(120, 120, 120) },
+            { typeof(Youmu), new EnemyActWeights(120, 120, 120) },
+            { typeof(Kokoro), new EnemyActWeights(120, 120, 120) },
+            { typeof(YaTiangou), new EnemyActWeights(120, 120, 120) }, //crow tengu
+            { typeof(LangTiangou), new EnemyActWeights(130, 130, 130) }, //wolf tengu
+            { typeof(LoveGirl), new EnemyActWeights(200, 200, 200) },
+            { typeof(Terminator), new EnemyActWeights(100, 100, 100) },
+            { typeof(HardworkRabbit), new EnemyActWeights(150, 150, 150) },
+            { typeof(LazyRabbit), new EnemyActWeights(150, 150, 150) },
+            { typeof(KanakoLimao), new EnemyActWeights(120, 120, 120) },
+            { typeof(SuwakoLimao), new EnemyActWeights(120, 120, 120) },
+            { typeof(Clownpiece), new EnemyActWeights(230, 230, 230) },
+            { typeof(Siji), new EnemyActWeights(230, 230, 230) },
+            { typeof(Doremy), new EnemyActWeights(230, 230, 230) },
         };
+        internal struct EnemyActWeights
+        {
+            public int Act1;
+            public int Act2;
+            public int Act3;
+            public EnemyActWeights(int act1, int act2, int act3)
+            {
+                Act1 = act1;
+                Act2 = act2;
+                Act3 = act3;
+            }
+            public int GetWeight(int act)
+            {
+                return act switch
+                {
+                    1 => Act1,
+                    2 => Act2,
+                    3 => Act3,
+                    _ => -1
+                };
+            }
+        }
 
         private static List<Type> supportEnemies = new List<Type>()
         {
@@ -227,24 +250,24 @@ namespace EnemyRandomizer
             typeof(Nitori),
         };
 
-        private static bool IsValidEncounter(List<ValueTuple<Type, int>> candidates)
+        private static bool IsValidEncounter(List<(Type type, int weight)> candidates)
         {
-            if (previousEncounter.Count != 0 && previousEncounter.Where(pe => candidates.Select(c => c.Item1).Contains(pe)).Count() == previousEncounter.Count)
+            if (previousEncounter.Count != 0 && previousEncounter.Where(pe => candidates.Select(c => c.type).Contains(pe)).Count() == previousEncounter.Count)
             {
                 BepinexPlugin.log.LogInfo("INVALID: matches previous encounter");
                 return false;
             }
-            if (candidates.Count == 1 && candidates.Any(c => supportEnemies.Contains(c.Item1)))
+            if (candidates.Count == 1 && candidates.Any(c => supportEnemies.Contains(c.type)))
             {
                 BepinexPlugin.log.LogInfo("INVALID: solo support unit");
                 return false;
             }
-            if (candidates.Where(c => summonerEnemies.Contains(c.Item1)).Count() > 1)
+            if (candidates.Where(c => summonerEnemies.Contains(c.type)).Count() > 1)
             {
                 BepinexPlugin.log.LogInfo("INVALID: more than 1 summoner");
                 return false;
             }
-            if (candidates.Any(c => c.Item1 == typeof(HetongYinchen)) && !candidates.Any(c => gloomyKappaRequirements.Contains(c.Item1)))
+            if (candidates.Any(c => c.type == typeof(HetongYinchen)) && !candidates.Any(c => gloomyKappaRequirements.Contains(c.type)))
             {
                 BepinexPlugin.log.LogInfo("INVALID: gloomy kappa without drone or nitori");
                 return false;
