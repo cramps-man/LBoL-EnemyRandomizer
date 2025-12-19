@@ -51,7 +51,7 @@ namespace EnemyRandomizer
             {
                 var candidates = new List<(Type type, int weight)>();
                 int firstEnemyMinWeight = __instance.GameRun.StationRng.NextInt(0, maxActWeight);
-                int minEnemies = __instance.GameRun.StationRng.NextInt(1, 2);
+                int minEnemies = __instance.GameRun.StationRng.NextInt(1, 3);
                 int maxEnemies = __instance.GameRun.StationRng.NextInt(3, 5);
                 BepinexPlugin.log.LogInfo("First enemy min weight: " + firstEnemyMinWeight + " - min enemies: " + minEnemies + " - max enemies: " + maxEnemies + " - num roll: " + numRolls);
                 do
@@ -171,7 +171,7 @@ namespace EnemyRandomizer
             { typeof(Scout), new EnemyActWeights(50, 65, 80) },
             { typeof(WaterGirl), new EnemyActWeights(-1, 100, 120) },
             { typeof(Yaoshi), new EnemyActWeights(45, 60, 75) }, //floating rock
-            { typeof(Fox), new EnemyActWeights(-1, 120, 160) },
+            { typeof(Fox), new EnemyActWeights(-1, 120, 180) },
             { typeof(BatLord), new EnemyActWeights(60, 80, 100) },
             { typeof(HetongKailang), new EnemyActWeights(60, 80, 100) }, //joy kappa
             { typeof(HetongYinchen), new EnemyActWeights(40, 40, 40) }, //gloomy kappa
@@ -254,7 +254,7 @@ namespace EnemyRandomizer
 
         private static bool IsValidEncounter(List<(Type type, int weight)> candidates)
         {
-            if (previousEncounter.Count != 0 && previousEncounter.Where(pe => candidates.Select(c => c.type).Contains(pe)).Count() == previousEncounter.Count)
+            if (previousEncounter.Count != 0 && (previousEncounter.All(pe => candidates.Select(c => c.type).Contains(pe)) || candidates.All(c => previousEncounter.Contains(c.type))))
             {
                 BepinexPlugin.log.LogInfo("INVALID: matches previous encounter");
                 return false;
