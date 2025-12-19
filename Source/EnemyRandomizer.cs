@@ -100,13 +100,16 @@ namespace EnemyRandomizer
                 new EnemyGroupEntry.EntrySource(typeof(Nitori), 2),
             };*/
             var chosenEnemies = new List<EnemyGroupEntry.EntrySource>();
-            int index = 7;
+            List<int> possibleIndexes = new List<int>() { 3,4,5,6,7 };
             previousEncounter.Clear();
             foreach (var (enemyType, value) in potentialEnemies.Sample(__instance.GameRun.StationRng))
             {
                 previousEncounter.Add(enemyType);
-                chosenEnemies.Add(new EnemyGroupEntry.EntrySource(enemyType, index));
-                index--;
+                int chosenIndex = possibleIndexes.SampleOrDefault(__instance.GameRun.StationRng);
+                if (chosenIndex == 0)
+                    break;
+                possibleIndexes.Remove(chosenIndex);
+                chosenEnemies.Add(new EnemyGroupEntry.EntrySource(enemyType, chosenIndex));
             };
 
             var enemyGroup = __instance.EnemyGroup;
@@ -136,14 +139,14 @@ namespace EnemyRandomizer
             { "3-1", 210 },
             { "3-2", 230 },
             { "3-3", 250 },
-            { "3-e", 320 },
+            { "3-e", 360 },
         };
 
         internal static Dictionary<Type, EnemyActWeights> enemyWeights = new Dictionary<Type, EnemyActWeights>()
         {
             { typeof(WhiteFairy), new EnemyActWeights(40, 40, 40) },
-            { typeof(RavenWen), new EnemyActWeights(15, 25, 35) },
-            { typeof(RavenGuo), new EnemyActWeights(15, 25, 35) },
+            { typeof(RavenWen), new EnemyActWeights(15, 20, 25) },
+            { typeof(RavenGuo), new EnemyActWeights(15, 20, 25) },
             { typeof(GuihuoBlue), new EnemyActWeights(20, 25, 30) }, //spirit
             { typeof(GuihuoGreen), new EnemyActWeights(20, 25, 30) },
             { typeof(GuihuoRed), new EnemyActWeights(30, 35, 40) },
@@ -181,8 +184,8 @@ namespace EnemyRandomizer
             { typeof(LangTiangou), new EnemyActWeights(-1, 130, 150) }, //wolf tengu
             { typeof(LoveGirl), new EnemyActWeights(-1, 190, 230) },
             { typeof(Terminator), new EnemyActWeights(-1, 100, 120) },
-            { typeof(HardworkRabbit), new EnemyActWeights(-1, 150, 200) },
-            { typeof(LazyRabbit), new EnemyActWeights(-1, 150, 200) },
+            { typeof(HardworkRabbit), new EnemyActWeights(-1, 150, 180) },
+            { typeof(LazyRabbit), new EnemyActWeights(-1, 150, 180) },
             { typeof(KanakoLimao), new EnemyActWeights(-1, 140, 160) },
             { typeof(SuwakoLimao), new EnemyActWeights(-1, 120, 150) },
             { typeof(Clownpiece), new EnemyActWeights(-1, -1, 240) },
@@ -221,7 +224,6 @@ namespace EnemyRandomizer
             typeof(YinyangyuBlue),
             typeof(FraudRabbit),
             typeof(Bat),
-            typeof(Sunny),
             typeof(Luna),
             typeof(Star),
             typeof(Purifier),
