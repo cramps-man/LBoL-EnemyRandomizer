@@ -76,12 +76,12 @@ namespace EnemyRandomizer
                 BepinexPlugin.log.LogInfo("Total weight: " + candidates.Sum(c => c.weight));
                 if (candidates.Sum(c => c.weight) < weightLeeway)
                 {
-                    BepinexPlugin.log.LogInfo("INVALID: Below min weight");
+                    BepinexPlugin.log.LogInfo("===INVALID: Below min weight===");
                     continue;
                 }
                 if (candidates.Count < minEnemies)
                 {
-                    BepinexPlugin.log.LogInfo("INVALID: Less than min enemies");
+                    BepinexPlugin.log.LogInfo("===INVALID: Less than min enemies===");
                     continue;
                 }
                 if (!IsValidEncounter(candidates))
@@ -254,24 +254,24 @@ namespace EnemyRandomizer
 
         private static bool IsValidEncounter(List<(Type type, int weight)> candidates)
         {
-            if (previousEncounter.Count != 0 && (previousEncounter.All(pe => candidates.Select(c => c.type).Contains(pe)) || candidates.All(c => previousEncounter.Contains(c.type))))
+            if (previousEncounter.Any(pe => candidates.Select(c => c.type).Contains(pe)))
             {
-                BepinexPlugin.log.LogInfo("INVALID: matches previous encounter");
+                BepinexPlugin.log.LogInfo("===INVALID: matches 1 or more enemy types from previous encounter===");
                 return false;
             }
             if (candidates.Count == 1 && candidates.Any(c => supportEnemies.Contains(c.type)))
             {
-                BepinexPlugin.log.LogInfo("INVALID: solo support unit");
+                BepinexPlugin.log.LogInfo("===INVALID: solo support unit===");
                 return false;
             }
             if (candidates.Where(c => summonerEnemies.Contains(c.type)).Count() > 1)
             {
-                BepinexPlugin.log.LogInfo("INVALID: more than 1 summoner");
+                BepinexPlugin.log.LogInfo("===INVALID: more than 1 summoner===");
                 return false;
             }
             if (candidates.Any(c => c.type == typeof(HetongYinchen)) && !candidates.Any(c => gloomyKappaRequirements.Contains(c.type)))
             {
-                BepinexPlugin.log.LogInfo("INVALID: gloomy kappa without drone or nitori");
+                BepinexPlugin.log.LogInfo("==INVALID: gloomy kappa without drone or nitori===");
                 return false;
             }
             return true;

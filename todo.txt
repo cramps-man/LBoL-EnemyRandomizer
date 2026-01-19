@@ -23,8 +23,13 @@ prevent back to back repeat of encounters - DONE
   - also prevent repeat of number of enemies?
     - leave this for now
 
-add config for each act
-add config to toggle elite nodes randomizing
-add config to toggle elite enemies included in randomizing
-add config to not allow repeat elites
+add config for each act - wont do
+add config to toggle elite nodes randomizing - doesnt make sense anymore, elites are pretty intergrated in the mod
+add config to toggle elite enemies included in randomizing - same here
+add config to not allow repeat elites - gonna update previous encounter check to save all encounters seen throughout run
   - need to save in custom save data which elites have shown
+
+update previous encounter rule to save all encounters throughout run
+  - add new custom save for list of list, and add rule
+add rule to prevent types seen in previous battle
+  - reuse all logic for previous encounter rule, just update the rule section

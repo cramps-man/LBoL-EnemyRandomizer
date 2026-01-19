@@ -11,14 +11,9 @@ If there are any enemy behavioural issues, feel free to comment.
  - Can not be more than 1 summoner type unit
  - Gloomy kappa can not spawn without a drone or nitori
  - Can not match the enemies from the previous encounter
+ - Can not match any enemy type from the previous encounter
 
 ## Changes to vanilla game
 
  - Enemies that gain Firepower now gain Delayed Firepower, to prevent hidden damage mid enemy turn
  - Power gain is overridden and now scales based on the enemy's weight and the act weight. Overall power gain is probably a bit higher than vanilla
-
-## For future
-
-Add config to allow the act section maximum weights to be adjusted.  
-Add configs regarding allowing elites.  
-Other various misc things.  
