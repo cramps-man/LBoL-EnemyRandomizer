@@ -1,3 +1,10 @@
+## 1.3.1
+
+- Updated the rule for "matching previous encounter" to now prevent any formation that's been seen for the current run, instead of only the previous battle
+  - This will mostly affect solo encounters as they are easily noticable when they repeat, and have higher chances to do so
+- Add a rule to prevent matching any enemy type seen the previous battle
+  - This will prevent the next encounter being only 1-2 enemies that are different, and provide more variety in general
+
 ## 1.3.0
 
 - Adjusted weights for each enemy to give them a value for each act. This will allow scaling enemies to be powerful later, without having a weak encounter earlier on
