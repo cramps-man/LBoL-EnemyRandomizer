@@ -23,6 +23,7 @@ namespace EnemyRandomizer
         private const int MAX_POTENTIAL_ENCOUNTERS = 25;
         private const int MAX_ROLLS = 500;
         internal static List<Type> previousEncounter = new List<Type>();
+        internal static List<List<Type>> allSeenEncounters = new List<List<Type>>();
 
         [HarmonyPatch(typeof(BattleStation), nameof(BattleStation.OnEnter))]
         private static void Postfix(BattleStation __instance)
@@ -44,7 +45,9 @@ namespace EnemyRandomizer
             BepinexPlugin.log.LogInfo("Max Act weight: " + maxActWeight);
             int weightLeeway = maxActWeight - 10 - maxActWeight / 8;
             BepinexPlugin.log.LogInfo("Min weight leeway: " + weightLeeway);
-            BepinexPlugin.log.LogInfo("Previous encounter: " + string.Join(", ", previousEncounter.ConvertAll<string>(t => t.Name)));
+            BepinexPlugin.log.LogInfo("Previous encounter: " + string.Join(", ", previousEncounter.ConvertAll(t => t.Name)));
+            BepinexPlugin.log.LogInfo("Previous formations: ");
+            allSeenEncounters.ForEach(se => BepinexPlugin.log.LogInfo(" - " + string.Join(", ", se.ConvertAll(t => t.Name))));
             var potentialEnemies = new List<List<(Type type, int weight)>>();
             int numRolls = 0;
             do
@@ -111,6 +114,7 @@ namespace EnemyRandomizer
                 possibleIndexes.Remove(chosenIndex);
                 chosenEnemies.Add(new EnemyGroupEntry.EntrySource(enemyType, chosenIndex));
             };
+            allSeenEncounters.Add(chosenEnemies.Select(es => es.Type).ToList());
 
             var enemyGroup = __instance.EnemyGroup;
             __instance.EnemyGroup = new EnemyGroup(enemyGroup.Id, chosenEnemies, enemyGroup.EnemyType,
@@ -272,6 +276,11 @@ namespace EnemyRandomizer
             if (candidates.Any(c => c.type == typeof(HetongYinchen)) && !candidates.Any(c => gloomyKappaRequirements.Contains(c.type)))
             {
                 BepinexPlugin.log.LogInfo("==INVALID: gloomy kappa without drone or nitori===");
+                return false;
+            }
+            if (allSeenEncounters.Any(se => Enumerable.SequenceEqual(se.OrderBy(se2 => se2.Name), candidates.Select(c => c.type).OrderBy(c => c.Name))))
+            {
+                BepinexPlugin.log.LogInfo("==INVALID: matches a formation seen previously this run===");
                 return false;
             }
             return true;

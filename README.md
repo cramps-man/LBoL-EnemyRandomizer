@@ -10,7 +10,7 @@ If there are any enemy behavioural issues, feel free to comment.
  - Support type units can not spawn solo
  - Can not be more than 1 summoner type unit
  - Gloomy kappa can not spawn without a drone or nitori
- - Can not match the enemies from the previous encounter
+ - Can not match an enemy formation seen for the current run
  - Can not match any enemy type from the previous encounter
 
 ## Changes to vanilla game

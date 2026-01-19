@@ -29,7 +29,7 @@ add config to toggle elite enemies included in randomizing - same here
 add config to not allow repeat elites - gonna update previous encounter check to save all encounters seen throughout run
   - need to save in custom save data which elites have shown
 
-update previous encounter rule to save all encounters throughout run
+update previous encounter rule to save all encounters throughout run - DONE
   - add new custom save for list of list, and add rule
-add rule to prevent types seen in previous battle
+add rule to prevent types seen in previous battle - DONE
   - reuse all logic for previous encounter rule, just update the rule section
