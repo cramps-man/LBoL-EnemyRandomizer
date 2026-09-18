@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using HarmonyLib;
 using LBoLEntitySideloader;
 using LBoLEntitySideloader.Entities;
@@ -31,9 +32,12 @@ namespace EnemyRandomizer
         internal static string CUSTOM_EIGHT_FORMATION = "8custom";
 
         internal static CustomGameRunSaveData previousEncounterSaveData = new PreviousEncounterSaveData();
+
+        public static ConfigEntry<double> actWeightMultiplier;
         private void Awake()
         {
             log = Logger;
+            actWeightMultiplier = Config.Bind("RandomizerOptions", "ActWeightMultiplier", 1.0, "Multiplier for act weight. Always above x1.0. For moderate difficulty increases try x1.25 or x1.5. x2.0 is probably a significant increase. Anything above that is reaching ridiculous territory. ");
 
             // very important. Without this the entry point MonoBehaviour gets destroyed
             DontDestroyOnLoad(gameObject);

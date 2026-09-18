@@ -2,7 +2,6 @@
 
 Each enemy in the game is given a weight value based on difficulty.  
 The total weight of all enemies for this battle can not go over the maximum, based on the current act section.  
-Balance is still ongoing.  
 If there are any enemy behavioural issues, feel free to comment.  
 
 ## Custom rules for invalid encounters

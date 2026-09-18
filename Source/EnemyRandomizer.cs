@@ -41,7 +41,9 @@ namespace EnemyRandomizer
 
             BepinexPlugin.log.LogInfo("===NEW COMBAT===");
             BepinexPlugin.log.LogInfo("Act: " + __instance.Stage.Level + " - Act section: " + __instance.Act);
-            int maxActWeight = GetActWeight(__instance.Stage.Level, __instance.Act, __instance is EliteEnemyStation);
+            double actWeightMultiplier = GetActWeightMultiplier();
+            BepinexPlugin.log.LogInfo($"Act weight multiplier: {actWeightMultiplier}");
+            int maxActWeight = (int)(GetActWeight(__instance.Stage.Level, __instance.Act, __instance is EliteEnemyStation) * actWeightMultiplier);
             BepinexPlugin.log.LogInfo("Max Act weight: " + maxActWeight);
             int weightLeeway = maxActWeight - 10 - maxActWeight / 8;
             BepinexPlugin.log.LogInfo("Min weight leeway: " + weightLeeway);
@@ -128,6 +130,16 @@ namespace EnemyRandomizer
         internal static int GetActWeight(int act, int actSection, bool isElite)
         {
             return isElite ? actWeights[act + "-e"] : actWeights[act + "-" + actSection];
+        }
+        internal static double GetActWeightMultiplier()
+        {
+            double multiplier = BepinexPlugin.actWeightMultiplier.Value;
+            if (multiplier < 1.0)
+            {
+                BepinexPlugin.log.LogInfo("Act weight below 1.0 invalid, setting to 1.0");
+                multiplier = 1.0;
+            }
+            return multiplier;
         }
 
         internal static Dictionary<string, int> actWeights = new Dictionary<string, int>()
