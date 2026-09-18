@@ -68,6 +68,11 @@ namespace EnemyRandomizer
                     int candWeight = cand.Value.GetWeight(__instance.Stage.Level);
                     candidates.Add((cand.Key, candWeight));
                     BepinexPlugin.log.LogInfo("chosen cand: " + cand.Key.Name + " - " + candWeight + " - sum: " + candidates.Sum(c => c.weight));
+                    if (__instance.GameRun.StationRng.NextInt(1, 100) <= 5)
+                    {
+                        candidates.Add((cand.Key, candWeight));
+                        BepinexPlugin.log.LogInfo("Hit 5% chance, adding duplicate: " + cand.Key.Name + " - " + candWeight + " - sum: " + candidates.Sum(c => c.weight));
+                    }
                 } while (candidates.Sum(c => c.weight) < maxActWeight && candidates.Count < maxEnemies);
                 if (candidates.Sum(c => c.weight) > maxActWeight)
                 {
