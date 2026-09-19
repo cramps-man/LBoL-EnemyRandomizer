@@ -42,7 +42,7 @@ namespace EnemyRandomizer
             BepinexPlugin.log.LogInfo("===NEW COMBAT===");
             BepinexPlugin.log.LogInfo("Act: " + __instance.Stage.Level + " - Act section: " + __instance.Act);
             double actWeightMultiplier = GetActWeightMultiplier();
-            BepinexPlugin.log.LogInfo($"Act weight multiplier: {actWeightMultiplier}");
+            BepinexPlugin.log.LogInfo($"Act weight multiplier: x{actWeightMultiplier}");
             int maxActWeight = (int)(GetActWeight(__instance.Stage.Level, __instance.Act, __instance is EliteEnemyStation) * actWeightMultiplier);
             BepinexPlugin.log.LogInfo("Max Act weight: " + maxActWeight);
             int weightLeeway = maxActWeight - 10 - maxActWeight / 8;
@@ -108,6 +108,13 @@ namespace EnemyRandomizer
                 }
                 if (!IsValidEncounter(candidates))
                     continue;
+                int foxWeight = enemyWeights[typeof(Fox)].GetWeight(__instance.Stage.Level);
+                int otherWeights = GetTotalWeight(candidates, firstEnemyWeightBonus) - foxWeight;
+                if (candidates.Any(c => c.type == typeof(Fox)) && (otherWeights < foxWeight / 2 || otherWeights > foxWeight))
+                {
+                    BepinexPlugin.log.LogInfo("===INVALID: Fox weight vs other enemies too varied===");
+                    continue;
+                }
                 BepinexPlugin.log.LogInfo("===Added enemy group===");
                 potentialEnemies.Add(candidates);
             } while (potentialEnemies.Count < MAX_POTENTIAL_ENCOUNTERS);
@@ -167,11 +174,11 @@ namespace EnemyRandomizer
         {
             { "1-1", 40 },
             { "1-2", 60 },
-            { "1-3", 70 },
+            { "1-3", 75 },
             { "1-e", 100 },
             { "2-1", 110 },
-            { "2-2", 125 },
-            { "2-3", 140 },
+            { "2-2", 130 },
+            { "2-3", 150 },
             { "2-e", 190 },
             { "3-1", 210 },
             { "3-2", 230 },
@@ -184,9 +191,9 @@ namespace EnemyRandomizer
             { typeof(WhiteFairy), new EnemyActWeights(40, 50, 60, 0) },
             { typeof(RavenWen), new EnemyActWeights(15, 30, 45, 0) },
             { typeof(RavenGuo), new EnemyActWeights(15, 30, 45, 0) },
-            { typeof(GuihuoBlue), new EnemyActWeights(10, 30, 50, 20) }, //spirit
-            { typeof(GuihuoGreen), new EnemyActWeights(10, 30, 50, 20) },
-            { typeof(GuihuoRed), new EnemyActWeights(20, 40, 60, 20) },
+            { typeof(GuihuoBlue), new EnemyActWeights(10, 20, 30, 10) }, //spirit
+            { typeof(GuihuoGreen), new EnemyActWeights(10, 20, 30, 10) },
+            { typeof(GuihuoRed), new EnemyActWeights(20, 25, 30, 10) },
             { typeof(SickGirl), new EnemyActWeights(20, 30, 40, 0) },
             { typeof(YinyangyuRed), new EnemyActWeights(20, 30, 40, 0) }, //yingyang orb
             { typeof(YinyangyuBlue), new EnemyActWeights(30, 40, 50, 0) },
@@ -194,35 +201,35 @@ namespace EnemyRandomizer
             { typeof(DollPurple), new EnemyActWeights(60, 80, 100, 0) },
             { typeof(FraudRabbit), new EnemyActWeights(40, 60, 80, 20) },
             { typeof(BlackFairy), new EnemyActWeights(60, 70, 80, 0) },
-            { typeof(Bat), new EnemyActWeights(10, 20, 30, 50) },
+            { typeof(Bat), new EnemyActWeights(20, 30, 40, 40) },
             { typeof(MaoyuBlue), new EnemyActWeights(10, 15, 20, 20) }, //kedama
             { typeof(Maoyu), new EnemyActWeights(15, 20, 25, 0) }, //angy firepower kedama
             { typeof(MaoyuRed), new EnemyActWeights(10, 15, 20, 20) },
             { typeof(MaoyuBlack), new EnemyActWeights(25, 25, 25, 0) },
             { typeof(Sunny), new EnemyActWeights(40, 50, 60, 0) },
             { typeof(Luna), new EnemyActWeights(30, 45, 60, 20) },
-            { typeof(Star), new EnemyActWeights(30, 60, 80, 50) },
+            { typeof(Star), new EnemyActWeights(30, 60, 80, 40) },
             { typeof(Aya), new EnemyActWeights(70, 85, 100, 0) },
             { typeof(Rin), new EnemyActWeights(70, 90, 120, 0) },
-            { typeof(Purifier), new EnemyActWeights(40, 55, 70, 30) },
-            { typeof(Scout), new EnemyActWeights(50, 65, 80, 20) },
+            { typeof(Purifier), new EnemyActWeights(50, 65, 80, 0) },
+            { typeof(Scout), new EnemyActWeights(50, 65, 80, 0) },
             { typeof(WaterGirl), new EnemyActWeights(120, 100, 120, 0) },
-            { typeof(Yaoshi), new EnemyActWeights(45, 60, 75, 30) }, //floating rock
-            { typeof(Fox), new EnemyActWeights(60, 120, 180, 0) },
+            { typeof(Yaoshi), new EnemyActWeights(60, 80, 100, 0) }, //floating rock
+            { typeof(Fox), new EnemyActWeights(50, 120, 160, 0) },
             { typeof(BatLord), new EnemyActWeights(60, 70, 90, 30) },
             { typeof(HetongKailang), new EnemyActWeights(60, 80, 100, 20) }, //joy kappa
             { typeof(HetongYinchen), new EnemyActWeights(40, 50, 60, 0) }, //gloomy kappa
             { typeof(ShenlingPurple), new EnemyActWeights(30, 40, 50, 0) }, //gold spirit
             { typeof(ShenlingWhite), new EnemyActWeights(30, 40, 50, 0) },
-            { typeof(Nitori), new EnemyActWeights(170, 130, 150, 0) },
-            { typeof(Youmu), new EnemyActWeights(170, 130, 150, 0) },
-            { typeof(Kokoro), new EnemyActWeights(170, 130, 150, 0) },
+            { typeof(Nitori), new EnemyActWeights(200, 140, 180, 0) },
+            { typeof(Youmu), new EnemyActWeights(200, 140, 180, 0) },
+            { typeof(Kokoro), new EnemyActWeights(200, 140, 180, 0) },
             { typeof(YaTiangou), new EnemyActWeights(190, 130, 150, 0) }, //crow tengu
             { typeof(LangTiangou), new EnemyActWeights(190, 130, 150, 0) }, //wolf tengu
             { typeof(LoveGirl), new EnemyActWeights(250, 190, 230, 0) },
             { typeof(Terminator), new EnemyActWeights(150, 100, 120, 0) },
-            { typeof(HardworkRabbit), new EnemyActWeights(220, 130, 160, 0) },
-            { typeof(LazyRabbit), new EnemyActWeights(250, 170, 200, 0) },
+            { typeof(HardworkRabbit), new EnemyActWeights(240, 140, 180, 0) },
+            { typeof(LazyRabbit), new EnemyActWeights(280, 180, 220, 0) },
             { typeof(KanakoLimao), new EnemyActWeights(190, 140, 160, 0) },
             { typeof(SuwakoLimao), new EnemyActWeights(190, 120, 150, 0) },
             { typeof(Clownpiece), new EnemyActWeights(360, 300, 240, 0) },
@@ -310,12 +317,17 @@ namespace EnemyRandomizer
             }
             if (candidates.Any(c => c.type == typeof(HetongYinchen)) && !candidates.Any(c => gloomyKappaRequirements.Contains(c.type)))
             {
-                BepinexPlugin.log.LogInfo("==INVALID: gloomy kappa without drone or nitori===");
+                BepinexPlugin.log.LogInfo("===INVALID: gloomy kappa without drone or nitori===");
                 return false;
             }
             if (allSeenEncounters.Any(se => Enumerable.SequenceEqual(se.OrderBy(se2 => se2.Name), candidates.Select(c => c.type).OrderBy(c => c.Name))))
             {
-                BepinexPlugin.log.LogInfo("==INVALID: matches a formation seen previously this run===");
+                BepinexPlugin.log.LogInfo("===INVALID: matches a formation seen previously this run===");
+                return false;
+            }
+            if (candidates.Where(c => c.type == typeof(Fox)).Count() > 1)
+            {
+                BepinexPlugin.log.LogInfo("===INVALID: more than 1 Fox===");
                 return false;
             }
             return true;
