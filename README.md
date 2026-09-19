@@ -1,3 +1,5 @@
+## Requires the Jadebox "Enemy Randomizer" to be enabled
+
 ## Replaces normal and elite battle enemies with random enemies, based on act and weight value
 
 Each enemy in the game is given a weight value based on difficulty.  
@@ -11,6 +13,7 @@ If there are any enemy behavioural issues, feel free to comment.
  - Gloomy kappa can not spawn without a drone or nitori
  - Can not match an enemy formation seen for the current run
  - Can not match any enemy type from the previous encounter
+ - Special rule for Fox to prevent unbalanced encounters
 
 ## Changes to vanilla game
 

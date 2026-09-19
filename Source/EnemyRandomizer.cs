@@ -217,7 +217,7 @@ namespace EnemyRandomizer
             { typeof(Yaoshi), new EnemyActWeights(60, 80, 100, 0) }, //floating rock
             { typeof(Fox), new EnemyActWeights(50, 120, 160, 0) },
             { typeof(BatLord), new EnemyActWeights(60, 70, 90, 30) },
-            { typeof(HetongKailang), new EnemyActWeights(60, 80, 100, 20) }, //joy kappa
+            { typeof(HetongKailang), new EnemyActWeights(40, 60, 80, 20) }, //joy kappa
             { typeof(HetongYinchen), new EnemyActWeights(40, 50, 60, 0) }, //gloomy kappa
             { typeof(ShenlingPurple), new EnemyActWeights(30, 40, 50, 0) }, //gold spirit
             { typeof(ShenlingWhite), new EnemyActWeights(30, 40, 50, 0) },
@@ -227,8 +227,8 @@ namespace EnemyRandomizer
             { typeof(YaTiangou), new EnemyActWeights(190, 130, 150, 0) }, //crow tengu
             { typeof(LangTiangou), new EnemyActWeights(190, 130, 150, 0) }, //wolf tengu
             { typeof(LoveGirl), new EnemyActWeights(250, 190, 230, 0) },
-            { typeof(Terminator), new EnemyActWeights(150, 100, 120, 0) },
-            { typeof(HardworkRabbit), new EnemyActWeights(240, 140, 180, 0) },
+            { typeof(Terminator), new EnemyActWeights(180, 120, 150, 0) },
+            { typeof(HardworkRabbit), new EnemyActWeights(240, 160, 180, 0) },
             { typeof(LazyRabbit), new EnemyActWeights(280, 180, 220, 0) },
             { typeof(KanakoLimao), new EnemyActWeights(190, 140, 160, 0) },
             { typeof(SuwakoLimao), new EnemyActWeights(190, 120, 150, 0) },

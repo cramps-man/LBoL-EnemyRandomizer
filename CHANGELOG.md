@@ -1,3 +1,10 @@
+## 1.4.0
+
+- Added config for act multiplier. Increasing this allows more difficult enemies and more enemies to spawn
+- Added small chance for a duplicate enemy, since it's rare to get duplicates
+- Add a rule for Fox to prevent unbalanced encounters (too little or many enemies)
+- Tweaked the balance of enemy/act weights
+
 ## 1.3.1
 
 - Updated the rule for "matching previous encounter" to now prevent any formation that's been seen for the current run, instead of only the previous battle
@@ -18,7 +25,7 @@
 
 ## 1.2.2
 
-Fixed issue with enemies that didn't have a weight value, softlocking the game when they died
+- Fixed issue with enemies that didn't have a weight value, softlocking the game when they died
 
 ## 1.2.1
 
